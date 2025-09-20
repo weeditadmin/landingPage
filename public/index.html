@@ -802,9 +802,9 @@
             transform: translateX(-50%);
             width: 42%;
             height: clamp(0.3rem, 1vw, 0.45rem);
-            background: rgba(15, 23, 42, 0.85);
+            background: transparent;
             border-radius: 0 0 12px 12px;
-            z-index: 3;
+            z-index: 1;
         }
 
         .device--phone .device__button {
@@ -1342,6 +1342,135 @@
             pointer-events: none;
         }
 
+        /* Animated CTA Button */
+        .animated-cta {
+            position: relative;
+            overflow: hidden;
+            animation: pulse-glow 2s ease-in-out infinite;
+        }
+        
+        .animated-cta::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, #8b5cf6, #3b82f6, #8b5cf6, #3b82f6);
+            border-radius: inherit;
+            z-index: -1;
+            animation: border-flow 3s linear infinite;
+            opacity: 0.7;
+        }
+        
+        .animated-cta::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at 50% 50%, rgba(139, 92, 246, 0.3) 0%, transparent 70%);
+            border-radius: inherit;
+            animation: inner-glow 2s ease-in-out infinite alternate;
+        }
+        
+        @keyframes pulse-glow {
+            0%, 100% {
+                box-shadow: 0 0 20px rgba(139, 92, 246, 0.5), 0 0 40px rgba(59, 130, 246, 0.3);
+            }
+            50% {
+                box-shadow: 0 0 30px rgba(139, 92, 246, 0.8), 0 0 60px rgba(59, 130, 246, 0.5);
+            }
+        }
+        
+        @keyframes border-flow {
+            0% {
+                background-position: 0% 50%;
+            }
+            100% {
+                background-position: 200% 50%;
+            }
+        }
+        
+        @keyframes inner-glow {
+            0% {
+                opacity: 0.3;
+            }
+            100% {
+                opacity: 0.6;
+            }
+        }
+
+        /* Scroll Indicator */
+        .scroll-indicator {
+            position: absolute;
+            bottom: 4rem;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            animation: bounce-scroll 2s ease-in-out infinite;
+            cursor: pointer;
+        }
+        
+        .scroll-arrow {
+            width: 24px;
+            height: 24px;
+            border-right: 2px solid #a855f7;
+            border-bottom: 2px solid #a855f7;
+            transform: rotate(45deg);
+            animation: arrow-pulse 1.5s ease-in-out infinite;
+        }
+        
+        @keyframes bounce-scroll {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateX(-50%) translateY(0);
+            }
+            40% {
+                transform: translateX(-50%) translateY(-10px);
+            }
+            60% {
+                transform: translateX(-50%) translateY(-5px);
+            }
+        }
+        
+        @keyframes arrow-pulse {
+            0%, 100% {
+                opacity: 0.4;
+            }
+            50% {
+                opacity: 1;
+            }
+        }
+        
+        /* Button Click Animation */
+        .btn-click-animation {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn-click-animation .btn-text {
+            transition: opacity 0.5s ease;
+        }
+        
+        .btn-click-animation.clicked .btn-text {
+            opacity: 0;
+        }
+        
+        .btn-click-animation .arrow-pass {
+            position: absolute;
+            top: 50%;
+            left: -100%;
+            transform: translateY(-50%);
+            opacity: 0;
+            transition: left 1.2s ease, opacity 0.5s ease;
+        }
+        
+        .btn-click-animation.clicked .arrow-pass {
+            left: 100%;
+            opacity: 1;
+        }
+
         /* Plan Cards */
         .plan-card {
             position: relative;
@@ -1636,6 +1765,32 @@
             }
         }
 
+        /* Video Section Enhancements */
+        .video-showcase {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .video-showcase::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #9370db, transparent);
+            animation: shimmer 3s infinite;
+        }
+
+        @keyframes shimmer {
+            0%, 100% { opacity: 0; }
+            50% { opacity: 1; }
+        }
+
+        .video-showcase:hover {
+            box-shadow: 0 25px 50px -12px rgba(147, 112, 219, 0.25);
+        }
+
     </style>
 </head>
 <body class="bg-gray-900 text-gray-100">
@@ -1693,7 +1848,7 @@
         </div>
     </header>
 
-    <main class="pt-24 md:pt-28">
+    <main class="pt-10 md:pt-15">
     <!-- Hero Section with Scissor Experience -->
     <section id="scissor-stage" class="relative h-screen flex items-center justify-center text-center overflow-hidden">
         <div class="relative z-10 p-6 max-w-4xl mx-auto">
@@ -1704,11 +1859,22 @@
                 WeEdit connects content creators with expert video editors. Transform your raw footage into professional YouTube videos, podcast content, and social media clips with our subscription-based editing service.
             </p>
             <div class="flex flex-col items-center justify-center gap-4 sm:flex-row">
-                <button class="btn-primary bg-gradient-to-r from-purple-600 to-indigo-600 text-white px-6 py-3 md:px-10 md:py-4 rounded-full font-bold text-lg md:text-xl shadow-xl hover:from-purple-700 hover:to-indigo-700 animate-on-scroll" style="transition-delay: 0.4s;">
-                Start Your Video Editing Project Today
+                <button id="cta-button" class="btn-primary animated-cta btn-click-animation bg-gradient-to-r from-purple-600 to-indigo-600 text-white px-6 py-3 md:px-10 md:py-4 rounded-full font-bold text-lg md:text-xl shadow-xl hover:from-purple-700 hover:to-indigo-700 animate-on-scroll group" style="transition-delay: 0.4s;">
+                <span class="btn-text">
+                    Start Your Video Editing Project Today
+                </span>
+                <svg class="arrow-pass w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
+                </svg>
                 </button>
             </div>
             <p class="mt-8 text-gray-400 text-sm animate-on-scroll" style="transition-delay: 0.6s;">Trusted by 10,000+ YouTubers, influencers, podcasters, and content creators worldwide.</p>
+        </div>
+        
+        <!-- Scroll Indicator -->
+        <div class="scroll-indicator" onclick="document.getElementById('how-it-works').scrollIntoView({behavior: 'smooth'})">
+            <span class="text-purple-300 text-sm font-medium">See How It Works</span>
+            <div class="scroll-arrow"></div>
         </div>
 
         <!-- Animation Overlays -->
@@ -1727,30 +1893,91 @@
 
     </section>
 
-    <!-- Process Video Section (New) -->
-    <section id="workflow-details" class="py-20"> <!-- Removed background classes for 3D visibility -->
-        <div class="container mx-auto px-6 text-center">
-            <h2 class="text-4xl font-bold mb-12 text-white animate-on-scroll">Professional Video Editing Process for Content Creators</h2>
-            <p class="text-lg text-gray-300 mb-10 max-w-3xl mx-auto animate-on-scroll" style="transition-delay: 0.2s;">See how WeEdit transforms raw footage into professional YouTube videos, podcast content, and social media clips that engage your audience and grow your channel.</p>
-            <div class="max-w-4xl mx-auto bg-gray-900 p-6 rounded-xl shadow-lg card-hover-effect video-container animate-on-scroll" style="transition-delay: 0.4s;">
-                <div class="relative aspect-video w-full rounded-lg overflow-hidden">
-                    <iframe
-                        class="absolute top-0 left-0 w-full h-full"
-                        src="https://www.youtube.com/embed/tgbNymZ7vqY?autoplay=0&controls=0&modestbranding=1&rel=0&showinfo=0&loop=1&playlist=tgbNymZ7vqY&enablejsapi=1"
-                        frameborder="0"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                        allowfullscreen
-                        data-video-id="tgbNymZ7vqY"
-                        title="WeEdit Video Editing Process - Professional YouTube and Podcast Editing Service"
-                    ></iframe>
-                    <div class="video-overlay absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center text-white text-xl font-bold transition-opacity duration-300">
-                        ▶️ Watch Our Video Editing Process
+    <!-- Process Video Section (Enhanced) -->
+    <section id="workflow-details" class="py-20 relative">
+        <div class="container mx-auto px-6">
+            <!-- Section Header -->
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-5xl font-bold mb-6 text-white animate-on-scroll">
+                    Professional Video Editing Process for <span class="text-purple-400">Content Creators</span>
+                </h2>
+                <p class="text-lg text-gray-300 mb-8 max-w-3xl mx-auto animate-on-scroll" style="transition-delay: 0.2s;">
+                    See how WeEdit transforms raw footage into professional YouTube videos, podcast content, and social media clips that engage your audience and grow your channel.
+                </p>
+                <div class="flex flex-wrap justify-center gap-4 animate-on-scroll" style="transition-delay: 0.3s;">
+                    <span class="bg-purple-600/20 text-purple-300 px-4 py-2 rounded-full text-sm font-medium border border-purple-500/30">YouTube Videos</span>
+                    <span class="bg-purple-600/20 text-purple-300 px-4 py-2 rounded-full text-sm font-medium border border-purple-500/30">Podcast Content</span>
+                    <span class="bg-purple-600/20 text-purple-300 px-4 py-2 rounded-full text-sm font-medium border border-purple-500/30">Social Media Clips</span>
+                    <span class="bg-purple-600/20 text-purple-300 px-4 py-2 rounded-full text-sm font-medium border border-purple-500/30">Brand Videos</span>
+                </div>
+            </div>
+
+            <!-- Video Container with Enhanced Design -->
+            <div class="max-w-5xl mx-auto">
+                <div class="video-showcase bg-gradient-to-br from-gray-800/50 to-gray-900/80 backdrop-blur-sm p-8 rounded-2xl shadow-2xl border border-gray-700/50 animate-on-scroll" style="transition-delay: 0.4s;">
+                    <!-- Video Header -->
+                    <div class="flex items-center justify-between mb-6">
+                        <div class="flex items-center gap-3">
+                            <div class="w-3 h-3 bg-red-500 rounded-full"></div>
+                            <div class="w-3 h-3 bg-yellow-500 rounded-full"></div>
+                            <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+                        </div>
+                        <div class="text-gray-400 text-sm font-mono">WeEdit Process Demo</div>
+                    </div>
+                    
+                    <!-- Video Player -->
+                    <div class="relative aspect-video w-full rounded-xl overflow-hidden bg-black group">
+                        <iframe
+                            id="process-video"
+                            class="absolute top-0 left-0 w-full h-full transition-transform duration-300 group-hover:scale-[1.02]"
+                            src="https://www.youtube.com/embed/tgbNymZ7vqY?autoplay=0&controls=1&modestbranding=1&rel=0&showinfo=0&enablejsapi=1"
+                            frameborder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            allowfullscreen
+                            data-video-id="tgbNymZ7vqY"
+                            title="WeEdit Video Editing Process - Professional YouTube and Podcast Editing Service"
+                        >
+                        </iframe>
+                        
+                        <!-- Video Overlay for Custom Controls -->
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
+                            <div class="absolute bottom-4 left-4 right-4 flex items-center justify-between">
+                                <div class="text-white text-sm font-medium bg-black/50 px-3 py-1 rounded-full backdrop-blur-sm">
+                                    Professional Editing Process
+                                </div>
+                                <div class="text-white text-xs bg-black/50 px-2 py-1 rounded backdrop-blur-sm">
+                                    HD Quality
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Video Stats -->
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6 p-4 bg-gray-800/30 rounded-xl border border-gray-700/30">
+                        <div class="text-center">
+                            <div class="text-2xl font-bold text-purple-400">24-48h</div>
+                            <div class="text-sm text-gray-400">Turnaround</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-2xl font-bold text-purple-400">4K</div>
+                            <div class="text-sm text-gray-400">Max Quality</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-2xl font-bold text-purple-400">∞</div>
+                            <div class="text-sm text-gray-400">Revisions</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-2xl font-bold text-purple-400">24/7</div>
+                            <div class="text-sm text-gray-400">Support</div>
+                        </div>
                     </div>
                 </div>
-                <p class="text-gray-400 text-sm mt-4">An AI-generated overview of the WeEdit platform and workflow.</p>
+                
+
             </div>
         </div>
     </section>
+
 
     <!-- How It Works Section -->
     <section id="how-it-works" class="workflow-slides">
@@ -1923,7 +2150,7 @@
     </section>
 
     <!-- Editor's Showcase Section (Moved after Before/After Slider) -->
-    <section class="py-20">
+    <section id="portfolio-showcase" class="py-20">
         <div class="container mx-auto px-6">
             <div class="text-center max-w-3xl mx-auto mb-12 animate-on-scroll">
                 <h2 class="text-4xl font-bold text-white">Professional Video Editing Portfolio - YouTube, Podcast & Social Media</h2>
@@ -2306,6 +2533,7 @@
             setupMainTestimonialCarousel('user-testimonials', 5000); // Initialize the main testimonials carousel
             setupCurvedCarousel(); // Initialize the curved portfolio carousel
             setupPlanCards(); // Initialize plan cards functionality
+            setupCTAButton(); // Initialize CTA button animation
             // setupPayAsYouGrowSlider(); // Temporarily disabled along with Pay-as-you-grow section
         }
 
@@ -3319,6 +3547,19 @@
             startAutoRotate();
         }
 
+        // CTA Button Animation
+        function setupCTAButton() {
+            const button = document.getElementById('cta-button');
+            
+            button.addEventListener('click', () => {
+                button.classList.add('clicked');
+                
+                setTimeout(() => {
+                    button.classList.remove('clicked');
+                }, 1200);
+            });
+        }
+
         // Plan Cards Logic
         function setupPlanCards() {
             const cards = document.querySelectorAll('.plan-card');
@@ -3376,6 +3617,9 @@
             }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
 
             elements.forEach(element => observer.observe(element));
+            
+            // Center hero section on load
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
     </script>
 
