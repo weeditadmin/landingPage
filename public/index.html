@@ -3240,14 +3240,7 @@
 
             const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 
-            const groups = mediaElements.reduce((acc, media) => {
-                const index = Number(media.dataset.slideIndex);
-                if (!acc[index]) acc[index] = [];
-                acc[index].push(media);
-                return acc;
-            }, {});
-
-            let currentIndex = 0;
+            let currentIndex = -1;
             let autoRotateInterval = null;
 
             const setActiveSlide = (index) => {
