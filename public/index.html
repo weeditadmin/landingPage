@@ -600,7 +600,7 @@
             transition: width 0.18s ease;
             z-index: 1;
         }
-        .sphere-layout {
+        .portfolio-layout {
             display: grid;
             grid-template-columns: repeat(2, minmax(0, 1fr));
             gap: clamp(2.5rem, 6vw, 4rem);
@@ -609,68 +609,6 @@
             margin: 0 auto;
             padding: clamp(2rem, 5vw, 4rem) 0;
         }
-
-        .sphere-carousel {
-            position: relative;
-            width: clamp(280px, 48vw, 560px);
-            height: clamp(280px, 48vw, 560px);
-            margin: 0 auto;
-            perspective: 1400px;
-        }
-
-        .carousel-frame {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: clamp(200px, 22vw, 260px);
-            height: clamp(300px, 32vw, 380px);
-            transform-origin: center center;
-            transform-style: preserve-3d;
-            border-radius: 1.75rem;
-            overflow: hidden;
-            background: linear-gradient(160deg, rgba(17, 24, 39, 0.9) 0%, rgba(30, 41, 59, 0.75) 100%);
-            border: 1px solid rgba(148, 163, 184, 0.25);
-            box-shadow: 0 25px 45px rgba(15, 23, 42, 0.55);
-            cursor: pointer;
-            transition: box-shadow 0.4s ease;
-        }
-
-        .carousel-frame::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            border-radius: inherit;
-            padding: 2px;
-            background: linear-gradient(135deg, rgba(129, 140, 248, 0.6), rgba(236, 72, 153, 0.35), rgba(59, 130, 246, 0.55));
-            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-            mask-composite: xor;
-            opacity: 0;
-            transition: opacity 0.35s ease;
-        }
-
-        .carousel-frame:hover::before,
-        .carousel-frame.active::before {
-            opacity: 1;
-        }
-
-        .carousel-frame.active {
-            z-index: 3;
-            box-shadow: 0 35px 65px rgba(94, 129, 244, 0.4);
-        }
-
-        .frame-video {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            filter: saturate(110%);
-            transition: transform 0.6s ease;
-        }
-
-        .carousel-frame:hover .frame-video,
-        .carousel-frame.active .frame-video {
-            transform: scale(1.04);
-        }
-
         .portfolio-content {
             max-width: 520px;
             margin: 0 auto;
@@ -750,7 +688,7 @@
         }
 
         @media (max-width: 1023px) {
-            .sphere-layout {
+            .portfolio-layout {
                 grid-template-columns: 1fr;
                 text-align: center;
             }
@@ -760,52 +698,147 @@
                 max-width: 640px;
             }
 
-            .sphere-carousel {
+            .portfolio-devices {
                 order: 1;
-                width: clamp(240px, 76vw, 420px);
-                height: clamp(240px, 76vw, 420px);
             }
         }
 
         @media (max-width: 640px) {
-            .sphere-carousel {
-                display: flex;
-                width: 100%;
-                height: auto;
-                gap: 1rem;
-                padding: 0 1rem 1rem;
-                overflow-x: auto;
-                scroll-snap-type: x mandatory;
-                perspective: none;
-            }
-
-            .sphere-carousel::-webkit-scrollbar {
-                display: none;
-            }
-
-            .sphere-carousel .carousel-frame {
-                position: relative;
-                top: auto;
-                left: auto;
-                width: clamp(180px, 72vw, 240px);
-                height: clamp(220px, 74vw, 300px);
-                transform: none !important;
-                flex: 0 0 auto;
-                scroll-snap-align: center;
-                box-shadow: 0 18px 38px rgba(15, 23, 42, 0.55);
-            }
-
-            .sphere-carousel .carousel-frame::before {
-                opacity: 0.65;
-            }
-
-            .sphere-carousel .carousel-frame.active {
-                border-color: rgba(196, 181, 253, 0.55);
-                box-shadow: 0 22px 44px rgba(124, 58, 237, 0.35);
-            }
-
             .portfolio-content {
                 padding-top: 1.75rem;
+            }
+        }
+
+        .portfolio-devices {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: clamp(1.5rem, 5vw, 3.5rem);
+        }
+
+        .device {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .device__shell {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(145deg, rgba(96, 63, 199, 0.6), rgba(59, 130, 246, 0.35));
+            box-shadow: 0 30px 60px rgba(30, 41, 59, 0.45);
+        }
+
+        .device__screen {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            border-radius: inherit;
+            overflow: hidden;
+            background: #000;
+        }
+
+        .device-media {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0;
+            transition: opacity 0.6s ease;
+        }
+
+        .device-media.is-active {
+            opacity: 1;
+        }
+
+        .device--laptop .device__shell {
+            width: clamp(280px, 38vw, 520px);
+            height: clamp(180px, 26vw, 320px);
+            border-radius: clamp(18px, 3vw, 26px);
+            padding: clamp(0.45rem, 1vw, 0.8rem);
+        }
+
+        .device--laptop .device__screen {
+            border-radius: clamp(12px, 2vw, 18px);
+        }
+
+        .device--laptop .device__base {
+            width: clamp(320px, 44vw, 560px);
+            height: clamp(16px, 2.4vw, 22px);
+            border-radius: 0 0 22px 22px;
+            background: linear-gradient(180deg, rgba(71, 85, 105, 0.95), rgba(30, 41, 59, 0.85));
+            box-shadow: 0 18px 24px rgba(15, 23, 42, 0.45);
+            margin-top: clamp(-0.4rem, -1vw, -0.25rem);
+        }
+
+        .device--phone {
+            position: absolute;
+            bottom: clamp(-48px, -6vw, -32px);
+            right: clamp(12px, 8vw, 52px);
+        }
+
+        .device--phone .device__shell {
+            width: clamp(120px, 18vw, 160px);
+            height: clamp(240px, 40vw, 300px);
+            border-radius: clamp(24px, 4vw, 32px);
+            padding: clamp(0.35rem, 1vw, 0.55rem);
+            background: linear-gradient(145deg, rgba(129, 140, 248, 0.75), rgba(167, 139, 250, 0.65));
+            box-shadow: 0 24px 40px rgba(76, 29, 149, 0.35);
+        }
+
+        .device--phone .device__screen {
+            border-radius: clamp(18px, 3vw, 24px);
+        }
+
+        .device--phone .device__notch {
+            position: absolute;
+            top: clamp(0.35rem, 1vw, 0.55rem);
+            left: 50%;
+            transform: translateX(-50%);
+            width: 42%;
+            height: clamp(0.3rem, 1vw, 0.45rem);
+            background: rgba(15, 23, 42, 0.85);
+            border-radius: 0 0 12px 12px;
+            z-index: 3;
+        }
+
+        .device--phone .device__button {
+            width: clamp(36px, 6vw, 48px);
+            height: clamp(36px, 6vw, 48px);
+            border-radius: 50%;
+            background: rgba(226, 232, 240, 0.08);
+            border: 1px solid rgba(226, 232, 240, 0.15);
+            margin-top: clamp(0.4rem, 1vw, 0.6rem);
+        }
+
+        @media (max-width: 1023px) {
+            .portfolio-devices {
+                flex-direction: column;
+            }
+            .device--phone {
+                position: relative;
+                bottom: auto;
+                right: auto;
+                margin-top: 1.5rem;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .device--laptop .device__shell {
+                width: clamp(240px, 82vw, 340px);
+                height: clamp(160px, 52vw, 230px);
+            }
+            .device--laptop .device__base {
+                width: clamp(260px, 88vw, 360px);
+            }
+            .device--phone .device__shell {
+                width: clamp(120px, 50vw, 160px);
+                height: clamp(220px, 74vw, 280px);
             }
         }
         @media (max-width: 1023px) {
@@ -1896,7 +1929,7 @@
                 <h2 class="text-4xl font-bold text-white">Professional Video Editing Portfolio - YouTube, Podcast & Social Media</h2>
                 <p class="text-lg text-gray-300 mt-4">Three snapshots of how WeEdit adapts craft across channels&mdash;from longform storytelling to micro content engineered for paid social.</p>
             </div>
-            <div class="sphere-layout animate-on-scroll" style="transition-delay:0.15s;">
+            <div class="portfolio-layout animate-on-scroll" style="transition-delay:0.15s;">
                 <!-- Content Left -->
                 <div class="portfolio-content" id="portfolio-content">
                     <div class="content-item active" data-index="0">
@@ -1930,26 +1963,43 @@
                             <li>CTA overlays, subtitles, and platform packs</li>
                             <li>Delivery for Meta, TikTok, Shorts in one pass</li>
                         </ul>
-                        <span class="content-kpi">18 hr turnaround</span>
-                    </div>
+                    <span class="content-kpi">18 hr turnaround</span>
                 </div>
+            </div>
 
-                <!-- Sphere Carousel Right -->
-                <div class="sphere-carousel" id="portfolio-carousel">
-                    <div class="carousel-frame active" data-index="0">
-                        <video class="frame-video" autoplay muted playsinline loop preload="auto" aria-label="YouTube edit montage">
-                            <source src="https://cdn.coverr.co/videos/coverr-working-late-8479/1080p.mp4" type="video/mp4">
-                        </video>
+                <div class="portfolio-devices" id="portfolio-devices">
+                    <div class="device device--laptop">
+                        <div class="device__shell">
+                            <div class="device__screen">
+                                <video class="device-media is-active" data-device="laptop" data-slide-index="0" autoplay muted playsinline loop preload="auto" aria-label="YouTube edit montage">
+                                    <source src="https://cdn.coverr.co/videos/coverr-working-late-8479/1080p.mp4" type="video/mp4">
+                                </video>
+                                <video class="device-media" data-device="laptop" data-slide-index="1" autoplay muted playsinline loop preload="auto" aria-label="Podcast video edit">
+                                    <source src="https://cdn.coverr.co/videos/coverr-interview-2744/1080p.mp4" type="video/mp4">
+                                </video>
+                                <video class="device-media" data-device="laptop" data-slide-index="2" autoplay muted playsinline loop preload="auto" aria-label="Social media vertical edit">
+                                    <source src="https://cdn.coverr.co/videos/coverr-lights-of-the-city-6531/1080p.mp4" type="video/mp4">
+                                </video>
+                            </div>
+                        </div>
+                        <div class="device__base"></div>
                     </div>
-                    <div class="carousel-frame" data-index="1">
-                        <video class="frame-video" autoplay muted playsinline loop preload="auto" aria-label="Podcast video edit">
-                            <source src="https://cdn.coverr.co/videos/coverr-interview-2744/1080p.mp4" type="video/mp4">
-                        </video>
-                    </div>
-                    <div class="carousel-frame" data-index="2">
-                        <video class="frame-video" autoplay muted playsinline loop preload="auto" aria-label="Social media vertical edit">
-                            <source src="https://cdn.coverr.co/videos/coverr-lights-of-the-city-6531/1080p.mp4" type="video/mp4">
-                        </video>
+                    <div class="device device--phone">
+                        <div class="device__shell">
+                            <div class="device__notch"></div>
+                            <div class="device__screen">
+                                <video class="device-media is-active" data-device="phone" data-slide-index="0" autoplay muted playsinline loop preload="auto" aria-label="YouTube edit montage (mobile)">
+                                    <source src="https://cdn.coverr.co/videos/coverr-working-late-8479/1080p.mp4" type="video/mp4">
+                                </video>
+                                <video class="device-media" data-device="phone" data-slide-index="1" autoplay muted playsinline loop preload="auto" aria-label="Podcast video edit (mobile)">
+                                    <source src="https://cdn.coverr.co/videos/coverr-interview-2744/1080p.mp4" type="video/mp4">
+                                </video>
+                                <video class="device-media" data-device="phone" data-slide-index="2" autoplay muted playsinline loop preload="auto" aria-label="Social media vertical edit (mobile)">
+                                    <source src="https://cdn.coverr.co/videos/coverr-lights-of-the-city-6531/1080p.mp4" type="video/mp4">
+                                </video>
+                            </div>
+                        </div>
+                        <div class="device__button"></div>
                     </div>
                 </div>
             </div>
@@ -3078,7 +3128,7 @@
             const nextButton = document.getElementById(`${idPrefix}-next`);
             const dotsContainer = document.getElementById(`${idPrefix}-dots`);
 
-            let currentIndex = 0;
+            let currentIndex = -1;
             const totalItems = items.length;
             let autoScrollInterval;
 
@@ -3183,135 +3233,97 @@
 
         // Curved Carousel Logic
         function setupCurvedCarousel() {
-            const frames = document.querySelectorAll('.sphere-carousel .carousel-frame');
             const contentItems = document.querySelectorAll('.portfolio-content .content-item');
+            const mediaElements = document.querySelectorAll('.device-media');
 
-            if (!frames.length || !contentItems.length) return;
+            if (contentItems.length === 0 || mediaElements.length === 0) return;
 
-            const mobileQuery = window.matchMedia('(max-width: 640px)');
+            const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 
-            const initMobileMode = () => {
-                const setMobileActive = (index) => {
-                    frames.forEach((frame, idx) => {
-                        frame.classList.toggle('active', idx === index);
-                    });
-                    contentItems.forEach((item, idx) => {
-                        item.classList.toggle('active', idx === index);
-                    });
-                };
-
-                frames.forEach((frame, index) => {
-                    frame.style.transform = 'none';
-                    frame.style.left = 'auto';
-                    frame.style.top = 'auto';
-                    frame.style.zIndex = '';
-                    frame.setAttribute('tabindex', '0');
-                    frame.addEventListener('click', () => setMobileActive(index));
-                    frame.addEventListener('keydown', (event) => {
-                        if (event.key === 'Enter' || event.key === ' ') {
-                            event.preventDefault();
-                            setMobileActive(index);
-                        }
-                    });
-                });
-
-                setMobileActive(0);
-
-                mobileQuery.addEventListener('change', (event) => {
-                    if (!event.matches) {
-                        window.location.reload();
-                    }
-                }, { once: true });
-            };
-
-            if (mobileQuery.matches) {
-                initMobileMode();
-                return;
-            }
+            const groups = mediaElements.reduce((acc, media) => {
+                const index = Number(media.dataset.slideIndex);
+                if (!acc[index]) acc[index] = [];
+                acc[index].push(media);
+                return acc;
+            }, {});
 
             let currentIndex = 0;
-            const totalFrames = frames.length;
-            let rotationOffset = 0;
-            let targetRotation = 0;
-            let isAnimating = false;
+            let autoRotateInterval = null;
 
-            const radius = 220;
-            const angleStep = (2 * Math.PI) / totalFrames;
+            const setActiveSlide = (index) => {
+                if (index === currentIndex) return;
+                currentIndex = index;
 
-            const updateFramePositions = () => {
-                frames.forEach((frame, index) => {
-                    frame.classList.remove('active');
-
-                    const angle = (index * angleStep) + rotationOffset;
-                    const x = Math.sin(angle) * radius;
-                    const z = Math.cos(angle) * radius - radius;
-                    const rotateY = (angle * 180) / Math.PI;
-                    const scale = index === currentIndex ? 1.18 : 0.82;
-
-                    if (index === currentIndex) {
-                        frame.classList.add('active');
-                        frame.style.zIndex = '3';
-                    } else {
-                        frame.style.zIndex = '1';
-                    }
-
-                    frame.style.transform = `translate(-50%, -50%) translate3d(${x}px, 0, ${z}px) rotateY(${rotateY}deg) scale(${scale})`;
+                contentItems.forEach((item, idx) => {
+                    item.classList.toggle('active', idx === currentIndex);
                 });
 
-                contentItems.forEach((item, index) => {
-                    item.classList.toggle('active', index === currentIndex);
+                mediaElements.forEach((media) => {
+                    const slideIndex = Number(media.dataset.slideIndex);
+                    const isActive = slideIndex === currentIndex;
+                    media.classList.toggle('is-active', isActive);
+                    if (media.readyState >= 2) {
+                        if (isActive) {
+                            media.currentTime = 0;
+                            media.play().catch(() => {});
+                        } else {
+                            media.pause();
+                        }
+                    }
                 });
             };
 
-            const animateCarousel = () => {
-                if (Math.abs(rotationOffset - targetRotation) > 0.01) {
-                    rotationOffset += (targetRotation - rotationOffset) * 0.03;
-                    updateFramePositions();
-                    requestAnimationFrame(animateCarousel);
-                } else {
-                    rotationOffset = targetRotation;
-                    updateFramePositions();
-                    isAnimating = false;
+            const goToIndex = (index) => {
+                const total = contentItems.length;
+                const target = (index + total) % total;
+                setActiveSlide(target);
+            };
+
+            const showNext = () => goToIndex(currentIndex + 1);
+
+            const stopAutoRotate = () => {
+                if (autoRotateInterval) {
+                    clearInterval(autoRotateInterval);
+                    autoRotateInterval = null;
                 }
             };
 
-            const goToIndex = (nextIndex) => {
-                if (isAnimating || nextIndex === currentIndex) return;
-
-                const forwardSteps = (nextIndex - currentIndex + totalFrames) % totalFrames;
-                const backwardSteps = (currentIndex - nextIndex + totalFrames) % totalFrames;
-                const direction = forwardSteps <= backwardSteps ? -1 : 1;
-                const steps = Math.min(forwardSteps, backwardSteps);
-
-                currentIndex = nextIndex;
-                targetRotation += direction * steps * angleStep;
-                isAnimating = true;
-                animateCarousel();
+            const startAutoRotate = () => {
+                if (prefersReducedMotion.matches) return;
+                stopAutoRotate();
+                autoRotateInterval = setInterval(showNext, 8000);
             };
 
-            const goToNext = () => {
-                const nextIndex = (currentIndex + 1) % totalFrames;
-                goToIndex(nextIndex);
-            };
-
-            let autoRotateInterval = setInterval(goToNext, 8000);
-
-            const resetAutoRotate = () => {
-                clearInterval(autoRotateInterval);
-                autoRotateInterval = setInterval(goToNext, 8000);
-            };
-
-            frames.forEach((frame, index) => {
-                frame.addEventListener('click', () => {
+            contentItems.forEach((item, index) => {
+                item.addEventListener('mouseenter', () => {
+                    stopAutoRotate();
                     goToIndex(index);
-                    resetAutoRotate();
                 });
-
-                frame.addEventListener('mouseenter', () => clearInterval(autoRotateInterval));
-                frame.addEventListener('mouseleave', resetAutoRotate);
+                item.addEventListener('mouseleave', () => {
+                    startAutoRotate();
+                });
+                item.addEventListener('click', () => {
+                    stopAutoRotate();
+                    goToIndex(index);
+                });
+                item.addEventListener('focusin', () => {
+                    stopAutoRotate();
+                    goToIndex(index);
+                });
+                item.addEventListener('focusout', () => {
+                    startAutoRotate();
+                });
             });
 
-            updateFramePositions();
+            const deviceContainer = document.getElementById('portfolio-devices');
+            if (deviceContainer) {
+                deviceContainer.addEventListener('mouseenter', stopAutoRotate);
+                deviceContainer.addEventListener('mouseleave', startAutoRotate);
+            }
+
+            // Initialize media playback states
+            setActiveSlide(0);
+            startAutoRotate();
         }
 
         // Plan Cards Logic
