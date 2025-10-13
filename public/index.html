@@ -3356,9 +3356,12 @@
             const nextButton = document.getElementById(`${idPrefix}-next`);
             const dotsContainer = document.getElementById(`${idPrefix}-dots`);
 
-            let currentIndex = -1;
+            let currentIndex = 0;
             const totalItems = items.length;
             let autoScrollInterval;
+
+            // Ensure we have items before proceeding
+            if (totalItems === 0) return;
 
             // Populate testimonials
             items.forEach((item, index) => {
@@ -3377,6 +3380,7 @@
             };
 
             const updateDots = () => {
+                if (!dotsContainer || totalItems === 0) return;
                 dotsContainer.innerHTML = ''; // Clear existing dots
                 items.forEach((_, index) => {
                     const dot = document.createElement('span');
@@ -3394,6 +3398,7 @@
             };
 
             const showNext = () => {
+                if (totalItems === 0) return;
                 currentIndex = (currentIndex < totalItems - 1) ? currentIndex + 1 : 0;
                 updateCarousel();
             };
@@ -3411,24 +3416,31 @@
                 startAutoScroll();
             };
 
-            prevButton.addEventListener('click', () => {
-                currentIndex = (currentIndex > 0) ? currentIndex - 1 : totalItems - 1;
-                updateCarousel();
-                resetAutoScroll(); // Reset auto-scroll on manual interaction
-            });
+            if (prevButton) {
+                prevButton.addEventListener('click', () => {
+                    if (totalItems === 0) return;
+                    currentIndex = (currentIndex > 0) ? currentIndex - 1 : totalItems - 1;
+                    updateCarousel();
+                    resetAutoScroll(); // Reset auto-scroll on manual interaction
+                });
+            }
 
-            nextButton.addEventListener('click', () => {
-                showNext();
-                resetAutoScroll(); // Reset auto-scroll on manual interaction
-            });
+            if (nextButton) {
+                nextButton.addEventListener('click', () => {
+                    showNext();
+                    resetAutoScroll(); // Reset auto-scroll on manual interaction
+                });
+            }
 
             // Initial setup and start auto-scroll
-            updateCarousel();
-            startAutoScroll();
+            if (totalItems > 0) {
+                updateCarousel();
+                startAutoScroll();
+            }
 
             // Pause auto-scroll on hover
             const carouselContainer = document.getElementById(`${idPrefix}-container`);
-            if (carouselContainer) {
+            if (carouselContainer && totalItems > 0) {
                 carouselContainer.addEventListener('mouseenter', stopAutoScroll);
                 carouselContainer.addEventListener('mouseleave', startAutoScroll);
             }
@@ -3468,7 +3480,7 @@
 
             const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 
-            let currentIndex = -1;
+            let currentIndex = 0;
             let autoRotateInterval = null;
 
             const setActiveSlide = (index) => {
@@ -3543,8 +3555,10 @@
             }
 
             // Initialize media playback states
-            setActiveSlide(0);
-            startAutoRotate();
+            if (contentItems.length > 0) {
+                setActiveSlide(0);
+                startAutoRotate();
+            }
         }
 
         // CTA Button Animation

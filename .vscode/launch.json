@@ -7,8 +7,8 @@
         {
             "type": "chrome",
             "request": "launch",
-            "name": "Open index.html",
-            "file": "/Users/sahiththota/Documents/Projects/WeEdit landing page/landingPage/index.html"
+            "name": "Open public/index.html",
+            "file": "${workspaceFolder}/public/index.html"
         }
     ]
 }
