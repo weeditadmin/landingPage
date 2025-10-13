@@ -52,11 +52,11 @@
     <link rel="canonical" href="https://www.weedit.co.in/">
     
     <!-- Favicon and App Icons -->
-    <link rel="icon" type="image/x-icon" href="/favicon.ico">
-    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-    <link rel="manifest" href="/site.webmanifest">
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+    <link rel="manifest" href="site.webmanifest">
     
     <!-- Preconnect for Performance -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -79,7 +79,7 @@
       "foundingDate": "2024",
       "contactPoint": {
         "@type": "ContactPoint",
-        "telephone": "+91-XXXXXXXXXX",
+
         "contactType": "customer service",
         "email": "support@weedit.co.in"
       },
@@ -135,8 +135,13 @@
         body {
             font-family: 'Inter', sans-serif;
             overflow-x: hidden; /* Prevent horizontal scroll due to 3D effect or other elements */
-            cursor: none; /* Hide default cursor */
             background-color: #1a202c; /* Ensure body has a dark background */
+        }
+        
+        @media (min-width: 769px) {
+            body.cursor-hidden {
+                cursor: none; /* Hide default cursor only when custom cursor JS is active */
+            }
         }
 
         /* Loading Screen Styling */
@@ -158,6 +163,12 @@
             transition: width 0.2s ease, height 0.2s ease, background-color 0.2s ease;
             z-index: 9999;
         }
+        
+        @media (max-width: 768px) {
+            .custom-cursor {
+                display: none;
+            }
+        }
 
         .custom-cursor.hover {
             width: 40px;
@@ -173,6 +184,15 @@
             width: 100vw;
             height: 100vh;
             z-index: -2; /* Placed behind all content */
+        }
+        
+        @media (max-width: 768px) {
+            #hero-canvas {
+                display: none; /* Disable 3D on mobile for performance */
+            }
+            body {
+                background: linear-gradient(135deg, #1a202c 0%, #2d3748 100%);
+            }
         }
 
         /* Custom scrollbar for better aesthetics */
@@ -223,6 +243,10 @@
         .video-container:hover .video-overlay {
             opacity: 0;
             pointer-events: none; /* Allow clicks to pass to iframe when hovered */
+        }
+        .video-container .video-overlay.clicked {
+            opacity: 0;
+            pointer-events: none;
         }
 
         /* Scroll-reveal animations (UPDATED for pure fade-in) */
@@ -358,13 +382,18 @@
         }
         .carousel-item {
             flex: 0 0 100%; /* Each item takes full width */
-            padding: 2rem;
+            padding: 1.5rem;
             box-sizing: border-box;
             display: flex;
             flex-direction: column;
             align-items: center;
             text-align: center;
             /* No background here, blends with body */
+        }
+        @media (min-width: 640px) {
+            .carousel-item {
+                padding: 2rem;
+            }
         }
         .carousel-button {
             position: absolute;
@@ -408,6 +437,24 @@
         }
         .dot.active {
             background-color: #3b82f6; /* Blue-500 */
+        }
+
+        /* Slides navigation styling */
+        .slides-nav {
+            display: block;
+            position: fixed;
+            right: 1.25rem;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 40;
+        }
+        .slides-nav--hidden {
+            display: none;
+        }
+        @media (max-width: 767px) {
+            .slides-nav {
+                display: none;
+            }
         }
 
         /* Slider specific styling for the "Pay as you grow" section */
@@ -493,32 +540,35 @@
 
             <!-- Navigation Links (Hidden on mobile, shown on larger screens) -->
             <div class="hidden md:flex space-x-8">
-                <!-- 
-                 <a href="#plans" class="text-gray-300 hover:text-purple-300 transition duration-300 rounded-md px-3 py-2">Plans</a>
+                <a href="#plans" class="text-gray-300 hover:text-purple-300 transition duration-300 rounded-md px-3 py-2">Plans</a>
                 <a href="#testimonials" class="text-gray-300 hover:text-purple-300 transition duration-300 rounded-md px-3 py-2">Testimonials</a>
-                -->
             </div>
 
             <!-- Call to Action Buttons -->
             <div class="flex items-center space-x-4">
-                <button class="btn-secondary bg-transparent border border-purple-500 text-purple-300 hover:bg-purple-700 hover:text-white px-5 py-2 rounded-full font-medium" onclick="window.open('https://weedit-india.web.app/', '_blank')">Log In</button>
-                <button class="btn-primary bg-gradient-to-r from-purple-600 to-indigo-600 text-white px-6 py-2 rounded-full font-semibold shadow-lg hover:from-purple-700 hover:to-indigo-700" onclick="window.open('https://weedit-india.web.app/', '_blank')">Get Started</button>
+                <button class="btn-secondary bg-transparent border border-purple-500 text-purple-300 hover:bg-purple-700 hover:text-white px-5 py-2 rounded-full font-medium" onclick="window.open('https://weedit-india.web.app/', '_blank', 'noopener,noreferrer')">Log In</button>
+                <button class="btn-primary bg-gradient-to-r from-purple-600 to-indigo-600 text-white px-6 py-2 rounded-full font-semibold shadow-lg hover:from-purple-700 hover:to-indigo-700" onclick="window.open('https://weedit-india.web.app/', '_blank', 'noopener,noreferrer')">Get Started</button>
+            </div>
         </nav>
     </header>
 
     <!-- Hero Section -->
     <section class="relative h-screen flex items-center justify-center text-center overflow-hidden">
         <div class="relative z-10 p-6 max-w-4xl mx-auto">
-            <h1 class="text-5xl md:text-7xl font-extrabold leading-tight mb-6 text-white drop-shadow-lg animate-on-scroll">
+            <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-extrabold leading-tight mb-6 text-white drop-shadow-lg animate-on-scroll">
                 Professional Video Editing Services for <span class="text-purple-400">YouTubers, Influencers & Podcasters</span>
             </h1>
-            <p class="text-lg md:text-xl text-gray-300 mb-10 max-w-2xl mx-auto animate-on-scroll" style="transition-delay: 0.2s;">
+            <p class="text-base sm:text-lg md:text-xl text-gray-300 mb-10 max-w-2xl mx-auto animate-on-scroll px-4" style="transition-delay: 0.2s;">
                 WeEdit connects content creators with expert video editors. Transform your raw footage into professional YouTube videos, podcast content, and social media clips with our subscription-based editing service.
             </p>
-            <button class="btn-primary bg-gradient-to-r from-purple-600 to-indigo-600 text-white px-10 py-4 rounded-full font-bold text-xl shadow-xl hover:from-purple-700 hover:to-indigo-700 animate-on-scroll" style="transition-delay: 0.4s;">
+            <button class="btn-primary bg-gradient-to-r from-purple-600 to-indigo-600 text-white px-6 sm:px-10 py-3 sm:py-4 rounded-full font-bold text-lg sm:text-xl shadow-xl hover:from-purple-700 hover:to-indigo-700 animate-on-scroll mx-4" style="transition-delay: 0.4s;" onclick="window.open('https://weedit-india.web.app/', '_blank', 'noopener,noreferrer')">
                 Start Your Video Editing Project Today
             </button>
-            <p class="mt-8 text-gray-400 text-sm animate-on-scroll" style="transition-delay: 0.6s;">Trusted by 10,000+ YouTubers, influencers, podcasters, and content creators worldwide.</p>
+            <div id="scroll-indicator" class="scroll-indicator mt-8 cursor-pointer">
+                <span class="text-purple-300 text-sm font-medium">See How It Works</span>
+                <div class="scroll-arrow"></div>
+            </div>
+            <p class="mt-8 text-gray-400 text-xs sm:text-sm animate-on-scroll px-4" style="transition-delay: 0.6s;">Trusted by 10,000+ YouTubers, influencers, podcasters, and content creators worldwide.</p>
         </div>
     </section>
 
@@ -535,8 +585,9 @@
                         frameborder="0"
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                         allowfullscreen
+                        loading="lazy"
                         data-video-id="tgbNymZ7vqY"
-                        title="WeEdit Video Editing Process - Professional YouTube and Podcast Editing Service"
+                        title="WeEdit Process Demo – Professional Editing Workflow"
                     ></iframe>
                     <div class="video-overlay absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center text-white text-xl font-bold transition-opacity duration-300">
                         ▶️ Watch Our Video Editing Process
@@ -551,30 +602,30 @@
     <section id="how-it-works" class="py-20"> <!-- Removed background classes for 3D visibility -->
         <div class="container mx-auto px-6 text-center">
             <h2 class="text-4xl font-bold mb-12 text-white animate-on-scroll">How Our Video Editing Service Works: From Raw Footage to Viral Content</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 lg:gap-10 px-4">
                 <!-- Step 1 -->
-                <div class="bg-gray-800 p-8 rounded-xl shadow-xl border-2 border-transparent hover:border-purple-500 card-hover-effect animate-on-scroll" style="transition-delay: 0.2s;">
+                <div class="bg-gray-800 p-6 sm:p-8 rounded-xl shadow-xl border-2 border-transparent hover:border-purple-500 card-hover-effect animate-on-scroll" style="transition-delay: 0.2s;">
                     <div class="text-purple-400 text-5xl mb-6">🎬</div> <!-- Emoji icon -->
-                    <h3 class="text-2xl font-semibold mb-4 text-white">1. Upload Your Footage</h3>
-                    <p class="text-gray-300">Securely upload your raw video files to our platform with ease.</p>
+                    <h3 class="text-xl sm:text-2xl font-semibold mb-4 text-white">1. Upload Your Footage</h3>
+                    <p class="text-sm sm:text-base text-gray-300">Securely upload your raw video files to our platform with ease.</p>
                 </div>
                 <!-- Step 2 -->
-                <div class="bg-gray-800 p-8 rounded-xl shadow-xl border-2 border-transparent hover:border-purple-500 card-hover-effect animate-on-scroll" style="transition-delay: 0.4s;">
+                <div class="bg-gray-800 p-6 sm:p-8 rounded-xl shadow-xl border-2 border-transparent hover:border-purple-500 card-hover-effect animate-on-scroll" style="transition-delay: 0.4s;">
                     <div class="text-purple-400 text-5xl mb-6">📝</div> <!-- Emoji icon -->
-                    <h3 class="text-2xl font-semibold mb-4 text-white">2. Create Your Request</h3>
-                    <p class="text-gray-300">Tell us your vision. Submit detailed editing instructions with ease.</p>
+                    <h3 class="text-xl sm:text-2xl font-semibold mb-4 text-white">2. Create Your Request</h3>
+                    <p class="text-sm sm:text-base text-gray-300">Tell us your vision. Submit detailed editing instructions with ease.</p>
                 </div>
                 <!-- Step 3 -->
-                <div class="bg-gray-800 p-8 rounded-xl shadow-xl border-2 border-transparent hover:border-purple-500 card-hover-effect animate-on-scroll" style="transition-delay: 0.6s;">
+                <div class="bg-gray-800 p-6 sm:p-8 rounded-xl shadow-xl border-2 border-transparent hover:border-purple-500 card-hover-effect animate-on-scroll" style="transition-delay: 0.6s;">
                     <div class="text-purple-400 text-5xl mb-6">💬</div> <!-- Emoji icon -->
-                    <h3 class="text-2xl font-semibold mb-4 text-white">3. Collaborate & Review</h3>
-                    <p class="text-gray-300">Work directly with your dedicated editor, providing feedback and revisions.</p>
+                    <h3 class="text-xl sm:text-2xl font-semibold mb-4 text-white">3. Collaborate & Review</h3>
+                    <p class="text-sm sm:text-base text-gray-300">Work directly with your dedicated editor, providing feedback and revisions.</p>
                 </div>
                 <!-- Step 4 -->
-                <div class="bg-gray-800 p-8 rounded-xl shadow-xl border-2 border-transparent hover:border-purple-500 card-hover-effect animate-on-scroll" style="transition-delay: 0.8s;">
+                <div class="bg-gray-800 p-6 sm:p-8 rounded-xl shadow-xl border-2 border-transparent hover:border-purple-500 card-hover-effect animate-on-scroll" style="transition-delay: 0.8s;">
                     <div class="text-purple-400 text-5xl mb-6">✅</div> <!-- Emoji icon -->
-                    <h3 class="text-2xl font-semibold mb-4 text-white">4. Download Your Masterpiece</h3>
-                    <p class="text-gray-300">Receive your professionally edited video, ready to share!</p>
+                    <h3 class="text-xl sm:text-2xl font-semibold mb-4 text-white">4. Download Your Masterpiece</h3>
+                    <p class="text-sm sm:text-base text-gray-300">Receive your professionally edited video, ready to share!</p>
                 </div>
             </div>
         </div>
@@ -626,7 +677,9 @@
                         frameborder="0"
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                         allowfullscreen
+                        loading="lazy"
                         data-video-id="PjG82B4hV6c"
+                        title="WeEdit Portfolio Showcase – Professional Video Editing Examples"
                     ></iframe>
                     <div class="video-overlay absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center text-white text-xl font-bold transition-opacity duration-300">
                         Hover to Play Demo
@@ -650,7 +703,7 @@
                 
                 <div class="flex justify-between items-center mb-6">
                     <h4 class="text-xl font-semibold text-white">Cost per patch</h4>
-                    <a href="#" class="text-purple-400 hover:text-purple-300 transition duration-300 flex items-center">
+                    <a href="#plans" class="text-purple-400 hover:text-purple-300 transition duration-300 flex items-center">
                         View full pricing <span class="ml-2">→</span>
                     </a>
                 </div>
@@ -675,11 +728,11 @@
             
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <!-- Plan Card 1: Creator -->
-                <div class="bg-gray-800 p-8 rounded-xl shadow-xl border-2 border-transparent hover:border-purple-500 card-hover-effect animate-on-scroll" style="transition-delay: 0.4s;">
-                    <h3 class="text-3xl font-bold text-purple-400 mb-4">Creator</h3>
-                    <p class="text-gray-300 mb-6">Perfect for individual content creators and small projects.</p>
-                    <div class="text-5xl font-extrabold text-white mb-6">$99<span class="text-xl font-normal text-gray-400">/month</span></div>
-                    <ul class="text-gray-300 text-left space-y-3 mb-8">
+                <div class="bg-gray-800 p-6 sm:p-8 rounded-xl shadow-xl border-2 border-transparent hover:border-purple-500 card-hover-effect animate-on-scroll" style="transition-delay: 0.4s;">
+                    <h3 class="text-2xl sm:text-3xl font-bold text-purple-400 mb-4">Creator</h3>
+                    <p class="text-sm sm:text-base text-gray-300 mb-6">Perfect for individual content creators and small projects.</p>
+                    <div class="text-4xl sm:text-5xl font-extrabold text-white mb-6">$99<span class="text-lg sm:text-xl font-normal text-gray-400">/month</span></div>
+                    <ul class="text-sm sm:text-base text-gray-300 text-left space-y-3 mb-8">
                         <li>✅ Up to 5 hours of editing</li>
                         <li>✅ 2 Revisions per project</li>
                         <li>✅ Standard turnaround time</li>
@@ -692,12 +745,12 @@
                 </div>
 
                 <!-- Plan Card 2: Professional (Most Popular) -->
-                <div class="bg-gray-800 p-8 rounded-xl shadow-xl border-2 border-purple-500 relative transform scale-105 card-hover-effect animate-on-scroll" style="transition-delay: 0.6s;">
-                    <div class="absolute -top-4 left-1/2 -translate-x-1/2 bg-purple-600 text-white text-sm font-bold px-4 py-1 rounded-full shadow-md">Most Popular</div>
-                    <h3 class="text-3xl font-bold text-purple-400 mb-4 mt-4">Professional</h3>
-                    <p class="text-gray-300 mb-6">Ideal for growing businesses and active content producers.</p>
-                    <div class="text-5xl font-extrabold text-white mb-6">$249<span class="text-xl font-normal text-gray-400">/month</span></div>
-                    <ul class="text-gray-300 text-left space-y-3 mb-8">
+                <div class="bg-gray-800 p-6 sm:p-8 rounded-xl shadow-xl border-2 border-purple-500 relative transform sm:scale-105 card-hover-effect animate-on-scroll" style="transition-delay: 0.6s;">
+                    <div class="absolute -top-4 left-1/2 -translate-x-1/2 bg-purple-600 text-white text-xs sm:text-sm font-bold px-3 sm:px-4 py-1 rounded-full shadow-md">Most Popular</div>
+                    <h3 class="text-2xl sm:text-3xl font-bold text-purple-400 mb-4 mt-4">Professional</h3>
+                    <p class="text-sm sm:text-base text-gray-300 mb-6">Ideal for growing businesses and active content producers.</p>
+                    <div class="text-4xl sm:text-5xl font-extrabold text-white mb-6">$249<span class="text-lg sm:text-xl font-normal text-gray-400">/month</span></div>
+                    <ul class="text-sm sm:text-base text-gray-300 text-left space-y-3 mb-8">
                         <li>✅ Up to 15 hours of editing</li>
                         <li>✅ Unlimited revisions</li>
                         <li>✅ Faster turnaround time</li>
@@ -711,14 +764,14 @@
                 </div>
 
                 <!-- Plan Card 3: Enterprise -->
-                <div class="bg-gray-800 p-8 rounded-xl shadow-xl border-2 border-transparent hover:border-purple-500 card-hover-effect animate-on-scroll" style="transition-delay: 0.8s;">
-                    <h3 class="text-3xl font-bold text-purple-400 mb-4">Enterprise</h3>
-                    <p class="text-gray-300 mb-6">Tailored solutions for large marketing teams and agencies.</p>
-                    <div class="text-5xl font-extrabold text-white mb-6">Custom</div>
-                    <ul class="text-gray-300 text-left space-y-3 mb-8">
+                <div class="bg-gray-800 p-6 sm:p-8 rounded-xl shadow-xl border-2 border-transparent hover:border-purple-500 card-hover-effect animate-on-scroll" style="transition-delay: 0.8s;">
+                    <h3 class="text-2xl sm:text-3xl font-bold text-purple-400 mb-4">Enterprise</h3>
+                    <p class="text-sm sm:text-base text-gray-300 mb-6">Tailored solutions for large marketing teams and agencies.</p>
+                    <div class="text-4xl sm:text-5xl font-extrabold text-white mb-6">Custom</div>
+                    <ul class="text-sm sm:text-base text-gray-300 text-left space-y-3 mb-8">
                         <li>✅ Custom editing hours</li>
                         <li>✅ Dedicated editing team</li>
-                        <li><li>✅ White-glove service</li>
+                        <li>✅ White-glove service</li>
                         <li>✅ Integration with JIRA/Stripe</li>
                         <li>✅ 24/7 priority support</li>
                     </ul>
@@ -738,7 +791,7 @@
             <p class="text-center text-gray-300 mb-8 max-w-2xl mx-auto animate-on-scroll" style="transition-delay: 0.2s;">Hear directly from our satisfied users about their experiences with WeEdit.</p>
 
             <!-- Auto-Scrolling Classic Slide Carousel -->
-            <div class="carousel-container relative max-w-2xl mx-auto animate-on-scroll" id="user-testimonials-container" style="transition-delay: 0.4s;">
+            <div class="carousel-container relative max-w-2xl mx-auto animate-on-scroll px-4" id="user-testimonials-container" style="transition-delay: 0.4s;">
                 <div class="carousel-track" id="user-testimonials-track">
                     <!-- 10 Testimonial Items (Content populated by JS) -->
                     <div class="carousel-item"></div>
@@ -764,7 +817,7 @@
         <div class="container mx-auto px-6 text-center">
             <h2 class="text-4xl font-bold mb-6 text-white animate-on-scroll">Ready to Transform Your Videos?</h2>
             <p class="text-xl text-gray-300 mb-10 max-w-2xl mx-auto animate-on-scroll" style="transition-delay: 0.2s;">Join the growing community of creators and businesses empowering their content with WeEdit. Sign up in minutes!</p>
-            <button class="btn-primary bg-gradient-to-r from-purple-600 to-indigo-600 text-white px-10 py-4 rounded-full font-bold text-xl shadow-xl hover:from-purple-700 hover:to-indigo-700 animate-on-scroll" style="transition-delay: 0.4s;">
+            <button class="btn-primary bg-gradient-to-r from-purple-600 to-indigo-600 text-white px-10 py-4 rounded-full font-bold text-xl shadow-xl hover:from-purple-700 hover:to-indigo-700 animate-on-scroll" style="transition-delay: 0.4s;" onclick="window.open('https://weedit-india.web.app/', '_blank', 'noopener,noreferrer')">
                 Get Started Now
             </button>
         </div>
@@ -885,6 +938,7 @@
             setupScrollAnimations();
             setupMainTestimonialCarousel('user-testimonials', 5000); // Initialize the main testimonials carousel
             setupPayAsYouGrowSlider(); // Initialize the new slider
+            setupScrollIndicator(); // Initialize scroll indicator
         }
 
 
@@ -892,6 +946,12 @@
         function initThreeJS(shouldAnimateIntro) {
             const container = document.getElementById('hero-canvas');
             if (!container) return;
+            
+            // Skip 3D on mobile devices for performance
+            if (window.innerWidth <= 768) {
+                container.style.display = 'none';
+                return;
+            }
 
             const width = window.innerWidth;
             const height = window.innerHeight;
@@ -981,7 +1041,7 @@
 
             // Particle intro transition (sphere to cloud)
             if (transitionProgress < 1) {
-                transitionProgress += 0.0001; // Speed of the explosion
+                transitionProgress += 0.01; // Speed of the explosion
                 transitionProgress = Math.min(transitionProgress, 1); // Clamp at 1
 
                 const currentPos = particles.geometry.attributes.position.array;
@@ -1048,8 +1108,15 @@
 
         // Custom Cursor Logic
         function setupCustomCursor() {
+            // Skip custom cursor on mobile
+            if (window.innerWidth <= 768) return;
+            
             const customCursor = document.querySelector('.custom-cursor');
             if(!customCursor) return;
+            
+            // Hide native cursor only after custom cursor is ready
+            document.body.classList.add('cursor-hidden');
+            
             document.addEventListener('mousemove', e => {
                 customCursor.style.left = e.clientX + 'px';
                 customCursor.style.top = e.clientY + 'px';
@@ -1066,15 +1133,28 @@
         function setupVideoHover() {
             document.querySelectorAll('.video-container').forEach(container => {
                 const iframe = container.querySelector('iframe');
-                if (!iframe) return;
+                const overlay = container.querySelector('.video-overlay');
+                if (!iframe || !overlay) return;
 
                 const videoId = iframe.dataset.videoId;
                 const initialSrc = `https://www.youtube.com/embed/${videoId}?autoplay=0&controls=0&modestbranding=1&rel=0&showinfo=0&loop=1&playlist=${videoId}&enablejsapi=1`;
                 const playSrc = `https://www.youtube.com/embed/${videoId}?autoplay=1&controls=1&modestbranding=1&rel=0&showinfo=0&loop=1&playlist=${videoId}&enablejsapi=1`;
 
                 iframe.src = initialSrc;
+                
+                // Handle touch devices
+                overlay.addEventListener('click', () => {
+                    overlay.classList.add('clicked');
+                    iframe.src = playSrc;
+                });
+                
+                // Keep hover for desktop
                 container.addEventListener('mouseenter', () => { iframe.src = playSrc; });
-                container.addEventListener('mouseleave', () => { iframe.src = initialSrc; });
+                container.addEventListener('mouseleave', () => { 
+                    if (!overlay.classList.contains('clicked')) {
+                        iframe.src = initialSrc; 
+                    }
+                });
             });
         }
 
@@ -1086,11 +1166,12 @@
             if (!slider || !afterImageWrapper || !dividerLine) return;
 
             function updateSlider(value) {
-                afterImageWrapper.style.clipPath = `inset(0 0 0 ${value}%)`;
+                const reveal = 100 - Number(value);
+                afterImageWrapper.style.clipPath = `inset(0 0 0 ${reveal}%)`;
                 dividerLine.style.left = `${value}%`;
             }
             updateSlider(slider.value);
-            slider.addEventListener('input', (event) => updateSlider(event.target.value));
+            slider.addEventListener('input', (event) => updateSlider(Number(event.target.value)));
         }
 
         // Testimonial Data (for easy reuse)
@@ -1218,6 +1299,15 @@
         }
 
 
+        // Scroll indicator setup
+        function setupScrollIndicator() {
+            const el = document.getElementById('scroll-indicator');
+            if (!el) return;
+            el.addEventListener('click', () => {
+                document.getElementById('how-it-works')?.scrollIntoView({ behavior: 'smooth' });
+            });
+        }
+
         // Scroll-reveal animation logic
         function setupScrollAnimations() {
             const elements = document.querySelectorAll('.animate-on-scroll');
@@ -1285,7 +1375,7 @@
         fbq('init', 'FACEBOOK_PIXEL_ID');
         fbq('track', 'PageView');
     </script>
-    <noscript><img height="1" width="1" style="display:none"
+    <noscript><img height="1" width="1" style="display:none" alt="" aria-hidden="true"
         src="https://www.facebook.com/tr?id=FACEBOOK_PIXEL_ID&ev=PageView&noscript=1"
     /></noscript>
 
@@ -1307,7 +1397,7 @@
         })(window.lintrk);
     </script>
     <noscript>
-        <img height="1" width="1" style="display:none;" alt="" src="https://px.ads.linkedin.com/collect/?pid=LINKEDIN_PARTNER_ID&fmt=gif" />
+        <img height="1" width="1" style="display:none;" alt="" aria-hidden="true" src="https://px.ads.linkedin.com/collect/?pid=LINKEDIN_PARTNER_ID&fmt=gif" />
     </noscript>
 
 </body>
