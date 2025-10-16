@@ -1812,13 +1812,12 @@
             <!-- Logo -->
             <a href="#" class="text-3xl font-extrabold text-purple-400">WeEdit<span class="text-white">.</span></a>
 
-            <!-- Navigation Links (Hidden on mobile, shown on larger screens) -->
-            <div class="hidden md:flex space-x-8">
-                <!-- 
-                 <a href="#plans" class="text-gray-300 hover:text-purple-300 transition duration-300 rounded-md px-3 py-2">Plans</a>
-                <a href="#testimonials" class="text-gray-300 hover:text-purple-300 transition duration-300 rounded-md px-3 py-2">Testimonials</a>
-                -->
-            </div>
+            <div class="flex items-center gap-3 md:gap-6">
+                <!-- Navigation Links (Hidden on mobile, shown on larger screens) -->
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#plans" class="text-gray-300 hover:text-purple-300 transition duration-300 rounded-md px-3 py-2">Plans</a>
+                    <a href="#testimonials" class="text-gray-300 hover:text-purple-300 transition duration-300 rounded-md px-3 py-2">Testimonials</a>
+                </div>
 
                 <!-- Log In Button -->
                 <button id="scissor-nav-trigger" type="button" class="magnetic-btn">
@@ -3357,12 +3356,9 @@
             const nextButton = document.getElementById(`${idPrefix}-next`);
             const dotsContainer = document.getElementById(`${idPrefix}-dots`);
 
-            let currentIndex = 0;
+            let currentIndex = -1;
             const totalItems = items.length;
             let autoScrollInterval;
-
-            // Ensure we have items before proceeding
-            if (totalItems === 0) return;
 
             // Populate testimonials
             items.forEach((item, index) => {
@@ -3381,7 +3377,6 @@
             };
 
             const updateDots = () => {
-                if (!dotsContainer || totalItems === 0) return;
                 dotsContainer.innerHTML = ''; // Clear existing dots
                 items.forEach((_, index) => {
                     const dot = document.createElement('span');
@@ -3399,7 +3394,6 @@
             };
 
             const showNext = () => {
-                if (totalItems === 0) return;
                 currentIndex = (currentIndex < totalItems - 1) ? currentIndex + 1 : 0;
                 updateCarousel();
             };
@@ -3417,31 +3411,24 @@
                 startAutoScroll();
             };
 
-            if (prevButton) {
-                prevButton.addEventListener('click', () => {
-                    if (totalItems === 0) return;
-                    currentIndex = (currentIndex > 0) ? currentIndex - 1 : totalItems - 1;
-                    updateCarousel();
-                    resetAutoScroll(); // Reset auto-scroll on manual interaction
-                });
-            }
+            prevButton.addEventListener('click', () => {
+                currentIndex = (currentIndex > 0) ? currentIndex - 1 : totalItems - 1;
+                updateCarousel();
+                resetAutoScroll(); // Reset auto-scroll on manual interaction
+            });
 
-            if (nextButton) {
-                nextButton.addEventListener('click', () => {
-                    showNext();
-                    resetAutoScroll(); // Reset auto-scroll on manual interaction
-                });
-            }
+            nextButton.addEventListener('click', () => {
+                showNext();
+                resetAutoScroll(); // Reset auto-scroll on manual interaction
+            });
 
             // Initial setup and start auto-scroll
-            if (totalItems > 0) {
-                updateCarousel();
-                startAutoScroll();
-            }
+            updateCarousel();
+            startAutoScroll();
 
             // Pause auto-scroll on hover
             const carouselContainer = document.getElementById(`${idPrefix}-container`);
-            if (carouselContainer && totalItems > 0) {
+            if (carouselContainer) {
                 carouselContainer.addEventListener('mouseenter', stopAutoScroll);
                 carouselContainer.addEventListener('mouseleave', startAutoScroll);
             }
@@ -3481,7 +3468,7 @@
 
             const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 
-            let currentIndex = 0;
+            let currentIndex = -1;
             let autoRotateInterval = null;
 
             const setActiveSlide = (index) => {
@@ -3556,10 +3543,8 @@
             }
 
             // Initialize media playback states
-            if (contentItems.length > 0) {
-                setActiveSlide(0);
-                startAutoRotate();
-            }
+            setActiveSlide(0);
+            startAutoRotate();
         }
 
         // CTA Button Animation
