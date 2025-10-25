@@ -52,11 +52,10 @@
     <link rel="canonical" href="https://www.weedit.co.in/">
     
     <!-- Favicon and App Icons -->
-    <link rel="icon" type="image/x-icon" href="/favicon.ico">
-    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-    <link rel="manifest" href="/site.webmanifest">
+    <link rel="icon" type="image/png" href="logo.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="icon-512x512.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="logo.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="logo.png">
     
     <!-- Preconnect for Performance -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -128,7 +127,7 @@
     <!-- External Dependencies -->
     <!-- Tailwind CSS CDN for utility-first CSS framework -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js" integrity="sha512-rA9q4CPGK/c/pXHiY/VKwxLBzME2YkdE+5EYXPLkZX31lrT7xvFeoJEB6Digw1VE3DybMT0SqnX+ANXoy2cK7Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js" referrerpolicy="no-referrer"></script>
     
     <!-- Google Fonts - Inter for modern typography -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -184,6 +183,55 @@
         .btn-secondary:hover {
             transform: translateY(-2px);
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .dashboard-cta {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+        }
+
+        .dashboard-cta .btn-loader {
+            display: none;
+            position: absolute;
+            inset: 0;
+            align-items: center;
+            justify-content: center;
+            pointer-events: none;
+        }
+
+        .dashboard-cta .btn-loader::after {
+            content: '';
+            width: 1.25rem;
+            height: 1.25rem;
+            border-radius: 999px;
+            border: 2px solid rgba(237, 233, 254, 0.85);
+            border-top-color: transparent;
+            animation: button-spin 0.9s linear infinite;
+            box-shadow: 0 0 0 1px rgba(76, 29, 149, 0.25);
+        }
+
+        .dashboard-cta.is-loading .btn-loader {
+            display: flex;
+        }
+
+        .dashboard-cta.is-loading .btn-text,
+        .dashboard-cta.is-loading .btn-label,
+        .dashboard-cta.is-loading .arrow-pass,
+        .dashboard-cta.is-loading svg:not(.btn-loader) {
+            opacity: 0;
+        }
+
+        .dashboard-cta.is-loading {
+            pointer-events: none;
+        }
+
+        @keyframes button-spin {
+            to {
+                transform: rotate(360deg);
+            }
         }
 
         /* Magnetic login button */
@@ -1864,13 +1912,15 @@
                 WeEdit connects content creators with expert video editors. Transform your raw footage into professional YouTube videos, podcast content, and social media clips with our subscription-based editing service.
             </p>
             <div class="flex flex-col items-center justify-center gap-4 sm:flex-row">
-                <button id="cta-button" class="btn-primary animated-cta btn-click-animation bg-gradient-to-r from-purple-600 to-indigo-600 text-white px-6 py-3 md:px-10 md:py-4 rounded-full font-bold text-lg md:text-xl shadow-xl hover:from-purple-700 hover:to-indigo-700 animate-on-scroll group" style="transition-delay: 0.4s;">
-                <span class="btn-text">
-                    Start Your Video Editing Project Today
-                </span>
-                <svg class="arrow-pass w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
-                </svg>
+                <button id="cta-button" class="dashboard-cta btn-primary animated-cta btn-click-animation bg-gradient-to-r from-purple-600 to-indigo-600 text-white px-6 py-3 md:px-10 md:py-4 rounded-full font-bold text-lg md:text-xl shadow-xl hover:from-purple-700 hover:to-indigo-700 animate-on-scroll group" style="transition-delay: 0.4s;">
+                    <span class="btn-text flex items-center gap-2">
+                        <span class="hidden sm:inline">Start Your Video Editing Project Today</span>
+                        <span class="sm:hidden">Get Started Today</span>
+                    </span>
+                    <svg class="arrow-pass w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
+                    </svg>
+                    <span class="btn-loader" aria-hidden="true"></span>
                 </button>
             </div>
             <p class="mt-8 text-gray-400 text-sm animate-on-scroll" style="transition-delay: 0.6s;">Trusted by 10,000+ YouTubers, influencers, podcasters, and content creators worldwide.</p>
@@ -2013,7 +2063,7 @@
                     </div>
                 </div>
                 <div class="slide__figure" role="presentation">
-                    <div class="slide__image" style="background-image: url('/assets/upload.jpg')"></div>
+                    <div class="slide__image" style="background-image: url('https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?auto=format&fit=crop&w=1200&q=80')"></div>
                     <div class="slide__overlay"></div>
                 </div>
             </article>
@@ -2083,7 +2133,7 @@
                     </div>
                 </div>
                 <div class="slide__figure" role="presentation">
-                    <div class="slide__image" style="background-image: url('assets/upload.jpg');"></div>                   
+                    <div class="slide__image" style="background-image: url('https://images.unsplash.com/photo-1517154421773-0529f29ea451?auto=format&fit=crop&w=1200&q=80');"></div>                   
                     <div class="slide__overlay"></div>
                 </div>
             </article>
@@ -2115,14 +2165,14 @@
                     <div class="before-after-slider difference-slider__frame bg-gray-800">
                         <div class="image-wrapper before-image-wrapper">
                             <video id="beforeVideo" class="w-full h-full object-cover" autoplay muted playsinline preload="auto" aria-label="Raw unedited video footage before WeEdit editing">
-                                <source src="assets/before_video.mp4" type="video/mp4">
+                                <source src="https://cdn.coverr.co/videos/coverr-lights-of-the-city-6531/1080p.mp4" type="video/mp4">
                                 Your browser does not support the video tag.
                             </video>
                         </div>
 
                         <div class="image-wrapper after-image-wrapper" id="afterImageWrapper">
                             <video id="afterVideo" class="w-full h-full object-cover" autoplay muted playsinline preload="auto" aria-label="Edited video after WeEdit processing">
-                                <source src="assets/after_video.mp4" type="video/mp4">
+                                <source src="https://cdn.coverr.co/videos/coverr-working-late-8479/1080p.mp4" type="video/mp4">
                                 Your browser does not support the video tag.
                             </video>
                         </div>
@@ -2360,8 +2410,9 @@
         <div class="container mx-auto px-6 text-center">
             <h2 class="text-4xl font-bold mb-6 text-white animate-on-scroll">Ready to Transform Your Videos?</h2>
             <p class="text-xl text-gray-300 mb-10 max-w-2xl mx-auto animate-on-scroll" style="transition-delay: 0.2s;">Join the growing community of creators and businesses empowering their content with WeEdit. Sign up in minutes!</p>
-            <button class="btn-primary bg-gradient-to-r from-purple-600 to-indigo-600 text-white px-6 py-3 md:px-10 md:py-4 rounded-full font-bold text-lg md:text-xl shadow-xl hover:from-purple-700 hover:to-indigo-700 animate-on-scroll" style="transition-delay: 0.4s;">
-                Get Started Now
+            <button id="get-started-button" class="dashboard-cta btn-primary bg-gradient-to-r from-purple-600 to-indigo-600 text-white px-6 py-3 md:px-10 md:py-4 rounded-full font-bold text-lg md:text-xl shadow-xl hover:from-purple-700 hover:to-indigo-700 animate-on-scroll" style="transition-delay: 0.4s;">
+                <span class="btn-label">Get Started Now</span>
+                <span class="btn-loader" aria-hidden="true"></span>
             </button>
         </div>
     </section>
@@ -2819,6 +2870,7 @@
 
             let animationTimeline = null;
             let redirectTimer = null;
+            let redirectTarget = null;
 
             if (!stage || !overlayTop || !overlayBottom || !scissorGraphic || triggerButtons.length === 0) {
                 return;
@@ -2826,17 +2878,20 @@
 
             const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 
-            const activateLoaderState = () => {
-                triggerButtons.forEach(btn => {
-                    btn.classList.add('is-loading');
-                    btn.style.transform = 'translate(0, 0)';
-                    btn.style.boxShadow = '0 10px 26px rgba(124, 58, 237, 0.32)';
-                });
+            const activateLoaderState = (button) => {
+                if (!button || button.classList.contains('is-loading')) return;
+                button.classList.add('is-loading');
+                if (button.classList.contains('magnetic-btn')) {
+                    button.style.transform = 'translate(0, 0)';
+                    button.style.boxShadow = '0 10px 26px rgba(124, 58, 237, 0.32)';
+                } else {
+                    button.setAttribute('disabled', 'disabled');
+                }
             };
 
             const redirectWithDelay = () => {
                 if (redirectTimer) return;
-                activateLoaderState();
+                activateLoaderState(redirectTarget);
                 redirectTimer = setTimeout(() => {
                     window.location.href = DASHBOARD_URL;
                 }, LOADER_DELAY);
@@ -2904,11 +2959,13 @@
                 redirectWithDelay();
             };
 
-            const showExperience = () => {
-                if (triggerButtons.some(btn => btn.classList.contains('is-loading'))) {
+            const showExperience = (button) => {
+                if (!button) return;
+                if (redirectTarget && redirectTarget.classList.contains('is-loading')) {
                     return;
                 }
-                activateLoaderState();
+                redirectTarget = button;
+                activateLoaderState(button);
 
                 if (prefersReducedMotion.matches || typeof gsap === 'undefined') {
                     showWithoutAnimation();
@@ -2927,7 +2984,7 @@
             triggerButtons.forEach(button => {
                 button.addEventListener('click', (event) => {
                     event.preventDefault();
-                    showExperience();
+                    showExperience(button);
                 });
             });
         }
@@ -3105,7 +3162,7 @@
                 setActiveSlide(activeIndex - 1);
             };
 
-            const handleWheel = (event) => {
+            function handleWheel(event) {
                 if (!isEnabled || isAnimating) return;
                 if (Math.abs(event.deltaY) < 25) return;
 
@@ -3129,9 +3186,9 @@
                 } else {
                     goToPrevious();
                 }
-            };
+            }
 
-            const handleKey = (event) => {
+            function handleKey(event) {
                 if (!isEnabled) return;
                 if (event.key === 'ArrowDown' || event.key === 'PageDown') {
                     event.preventDefault();
@@ -3141,20 +3198,20 @@
                     event.preventDefault();
                     goToPrevious();
                 }
-            };
+            }
 
-            const handleTouchStart = (event) => {
+            function handleTouchStart(event) {
                 if (!isEnabled) return;
                 touchState.startY = event.touches[0].clientY;
                 touchState.deltaY = 0;
-            };
+            }
 
-            const handleTouchMove = (event) => {
+            function handleTouchMove(event) {
                 if (!isEnabled) return;
                 touchState.deltaY = event.touches[0].clientY - touchState.startY;
-            };
+            }
 
-            const handleTouchEnd = () => {
+            function handleTouchEnd() {
                 if (!isEnabled) return;
                 if (Math.abs(touchState.deltaY) > 60) {
                     if (touchState.deltaY < 0) {
@@ -3163,7 +3220,7 @@
                         goToPrevious();
                     }
                 }
-            };
+            }
 
             const activateSlides = (opts = {}) => {
                 if (slidesActivated || !isEnabled) return;
@@ -3541,6 +3598,7 @@
         // CTA Button Animation
         function setupCTAButton() {
             const button = document.getElementById('cta-button');
+            if (!button) return;
             
             button.addEventListener('click', () => {
                 button.classList.add('clicked');
