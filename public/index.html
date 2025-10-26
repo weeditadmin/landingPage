@@ -126,9 +126,7 @@
     
     <!-- External Dependencies -->
     <!-- Tailwind CSS CDN for utility-first CSS framework -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js" referrerpolicy="no-referrer"></script>
-    
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <!-- Google Fonts - Inter for modern typography -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
@@ -2309,14 +2307,14 @@
                 <div class="plan-card animate-on-scroll" id="plan-creator" data-plan="creator" tabindex="0" style="transition-delay: 0.4s;">
                     <div class="plan-slide slide1">
                         <div class="plan-hero">
-                            <span class="plan-tier">Creator</span>
+                            <span class="plan-tier">Vertical</span>
                             <div class="plan-cost">₹1999<span>per month</span></div>
                             <span class="plan-value">Solo creators</span>
                         </div>
                     </div>
                     <div class="plan-slide slide2">
                         <div class="plan-content">
-                            <h3>Creator Plan</h3>
+                            <h3>Vertical Plan</h3>
                             <p class="plan-desc">Perfect for individual content creators and small projects.</p>
                             <ul class="plan-features">
                                 <li>Up to 5 hours of editing</li>
@@ -2334,15 +2332,15 @@
                     <div class="plan-badge">Most Popular</div>
                     <div class="plan-slide slide1">
                         <div class="plan-hero">
-                            <span class="plan-tier">Professional</span>
+                            <span class="plan-tier">Horizontal</span>
                             <div class="plan-cost">₹8999<span>per month</span></div>
                             <span class="plan-value">Growing teams</span>
                         </div>
                     </div>
                     <div class="plan-slide slide2">
                         <div class="plan-content">
-                            <h3>Professional Plan</h3>
-                            <p class="plan-desc">Ideal for growing businesses and active content producers.</p>
+                            <h3>horizontal Plan</h3>
+                            <p class="plan-desc">Ideal for growing businesses , short flims, active content producers and more.</p>
                             <ul class="plan-features">
                                 <li>Up to 15 hours of editing</li>
                                 <li>Unlimited revisions</li>
@@ -2359,15 +2357,15 @@
                 <div class="plan-card animate-on-scroll" id="plan-enterprise" data-plan="enterprise" tabindex="0" style="transition-delay: 0.8s;">
                     <div class="plan-slide slide1">
                         <div class="plan-hero">
-                            <span class="plan-tier">Enterprise</span>
+                            <span class="plan-tier">Custom</span>
                             <div class="plan-cost">Custom<span>Tailored pricing</span></div>
                             <span class="plan-value">Scale without limits</span>
                         </div>
                     </div>
                     <div class="plan-slide slide2">
                         <div class="plan-content">
-                            <h3>Enterprise Plan</h3>
-                            <p class="plan-desc">Tailored solutions for large marketing teams and agencies.</p>
+                            <h3>Custom Plan</h3>
+                            <p class="plan-desc">Tailored solutions for you, large marketing teams, agencies and everything else.</p>
                             <ul class="plan-features">
                                 <li>Custom editing hours</li>
                                 <li>Dedicated editing team</li>
@@ -2424,7 +2422,11 @@
         <div class="container mx-auto grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-8">
             <!-- Logo and Description -->
             <div class="animate-on-scroll">
-                <a href="#" class="text-3xl font-extrabold text-purple-400 mb-4 block">WeEdit<span class="text-white">.</span></a>
+                <a href="/" class="flex items-center gap-2 mb-4">
+                    <img src="logo.png" alt="WeEdit Logo" class="h-auto w-auto max-h-8">
+                    <span class="text-white font-bold text-xl sm:text-2xl">WeEdit</span>
+                </a>
+                <p class="text-sm text-purple-300 font-medium mb-3">A product of AnGaps Labs</p>
                 <p class="text-sm">Democratizing access to premium video editing by combining automation with human talent.</p>
             </div>
 
